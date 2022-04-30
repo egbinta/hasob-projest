@@ -37,6 +37,7 @@ Route::group([
     'prefix' => 'vendor'
 ], function ($router) {
     Route::get('/', [VendorController::class, 'index']);
+    Route::get('/item/{id}', [VendorController::class, 'getSingleItem']);
     Route::post('/store', [VendorController::class, 'store']);
     Route::put('/{id}', [VendorController::class, 'update']);
     Route::delete('/{id}', [VendorController::class, 'destroy']);

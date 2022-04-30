@@ -9,24 +9,24 @@ use Illuminate\Support\Facades\Validator;
 
 class VendorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $vendor = Vendor::all();
-
-        return response()->json(['data' => $vendor]);
+        return response()->json(['data' => Vendor::all()]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function getSingleItem($id)
+    {
+        $existingVendor = Vendor::find($id);
+        if($existingVendor) {
+            $vendor = Vendor::where('id', $existingVendor->id)->get();
+            return response()->json([
+                'data' => $vendor
+            ], 200);
+        }
+        return response()->json(['No record found']);
+
+    }
+
     public function store(Request $request)
     {
         $validator = validator()->make(request()->all(), [
@@ -59,13 +59,6 @@ class VendorController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $existingVendor = Vendor::find($id);
@@ -87,12 +80,6 @@ class VendorController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $existingVendor = Vendor::find($id);
